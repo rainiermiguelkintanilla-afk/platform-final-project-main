@@ -6,14 +6,14 @@ LISTEN_PORT="${PORT:-80}"
 echo "Configuring Nginx to listen on port ${LISTEN_PORT}..."
 sed -i "s/listen 80 default_server;/listen ${LISTEN_PORT} default_server;/" /etc/nginx/conf.d/symfony.conf
 
+echo "Running database migrations (if DATABASE_URL is configured)..."
+php bin/console doctrine:migrations:migrate --no-interaction --env=prod --allow-no-migration || true
+
 echo "Starting PHP-FPM..."
-php-fpm -F &
-PHP_PID=$!
+php-fpm -D
 
 echo "Waiting for PHP-FPM to start..."
 sleep 2
 
 echo "Starting Nginx..."
-nginx -g "daemon off;"
-
-wait $PHP_PID
+exec nginx -g "daemon off;"
