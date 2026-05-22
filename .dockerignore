@@ -1,0 +1,5 @@
+var/
+vendor/
+node_modules/
+.git
+docker-compose.yaml
