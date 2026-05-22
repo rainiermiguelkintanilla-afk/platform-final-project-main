@@ -36,6 +36,9 @@ FROM php:8.3-fpm AS runtime
 
 WORKDIR /app
 
+ENV APP_ENV=prod
+ENV APP_DEBUG=0
+
 RUN apt-get update && apt-get install -y \
     nginx \
     curl \
